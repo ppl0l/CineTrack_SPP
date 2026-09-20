@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CineTrack</title>
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+  <header>
+    <h1>CineTrack</h1>
+  </header>
+
+  <main class="container">
+    <section class="add-form">
+      <% if (error) { %>
+        <div class="message-box error">
+          <% if (error === 'empty') { %>
+            Заполните все обязательные поля.
+          <% } else if (error === 'upload') { %>
+            Ошибка загрузки файла. Проверьте формат и размер (до 5 МБ).
+          <% } %>
+        </div>
+      <% } %>
+
+      <form action="/add" method="POST" enctype="multipart/form-data">
+        <div class="form-grid">
+          <div class="field">
+            <label>Название</label>
+            <input type="text" name="title" placeholder="Введите название..." required>
+          </div>
+
+          <div class="field">
+            <label>Тип</label>
+            <select name="type">
+              <option value="<%= types.MOVIE %>"><%= types.MOVIE %></option>
+              <option value="<%= types.SERIES %>"><%= types.SERIES %></option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Статус</label>
+            <select name="statusId">
+              <% Object.keys(statuses).forEach(key => { %>
+                <option value="<%= statuses[key].id %>"><%= statuses[key].label %></option>
+              <% }) %>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Дата завершения</label>
+            <input type="date" name="dueDate" required>
+          </div>
+
+          <div class="field">
+            <label>Постер</label>
+            <label class="file-label" for="poster-input">
+              <span id="file-label-text">Выберите файл...</span>
+              <input type="file" name="poster" accept="image/*" id="poster-input">
+            </label>
+          </div>
+
+          <button type="submit" class="btn-submit">Добавить</button>
+        </div>
+      </form>
+    </section>
+
+    <div class="filters">
+      <a href="/?statusFilter=all" class="<%= currentFilter === 'all' ? 'active' : '' %>">Все</a>
+      <% Object.keys(statuses).forEach(key => { %>
+        <a href="/?statusFilter=<%= statuses[key].id %>" class="<%= currentFilter === statuses[key].id ? 'active' : '' %>">
+          <%= statuses[key].label %>
+        </a>
+      <% }) %>
+    </div>
+
+    <div class="grid">
+      <% if (watchlist.length === 0) { %>
+        <p class="empty-state">Нет задач</p>
+      <% } else { %>
+        <% watchlist.forEach(item => { %>
+          <div class="card">
+            <span class="status-pill"><%= item.status.label %></span>
+            <div class="poster-wrapper">
+              <% if (item.poster) { %>
+                <img src="<%= item.poster %>" alt="<%= item.title %>">
+              <% } else { %>
+                <div class="no-poster">Нет постера</div>
+              <% } %>
+            </div>
+            <div class="type"><%= item.type %></div>
+            <h3><%= item.title %></h3>
+            <div class="date">Дата: <%= item.dueDate %></div>
+            <form action="/delete/<%= item.id %>" method="POST">
+              <button type="submit" class="del-btn">Удалить</button>
+            </form>
+          </div>
+        <% }) %>
+      <% } %>
+    </div>
+  </main>
+
+  <footer>
+    CineTrack 2026
+  </footer>
+
+  <script>
+    document.getElementById('poster-input').addEventListener('change', function (e) {
+      const label = e.target.closest('label');
+      const span = document.getElementById('file-label-text');
+      const file = e.target.files[0];
+      span.textContent = file ? file.name : 'Выберите файл...';
+      label.classList.toggle('has-file', !!file);
+    });
+  </script>
+</body>
+</html>

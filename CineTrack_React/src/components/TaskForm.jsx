@@ -1,40 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+
+const TODAY = new Date().toISOString().slice(0, 10);
 
 export default function TaskForm({ statuses, types, error }) {
-  const [fileName, setFileName] = useState('Выбрать файл');
-  const [hasFile, setHasFile] = useState(false);
+  const [fileName, setFileName] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState('plan');
-
-  useEffect(() => {
-    const dateInput = document.getElementById('dueDate');
-    if (dateInput) {
-      const today = new Date();
-      const yyyy = today.getFullYear();
-      const mm = String(today.getMonth() + 1).padStart(2, '0');
-      const dd = String(today.getDate()).padStart(2, '0');
-      const todayStr = yyyy + '-' + mm + '-' + dd;
-
-      if (selectedStatus !== 'completed') {
-        dateInput.min = todayStr;
-      } else {
-        dateInput.removeAttribute('min');
-      }
-    }
-  }, [selectedStatus]);
-
-  const handleFileChange = (e) => {
-    if (e.target.files.length > 0) {
-      setFileName('Файл прикреплен');
-      setHasFile(true);
-    } else {
-      setFileName('Выбрать файл');
-      setHasFile(false);
-    }
-  };
-
-  const handleStatusChange = (e) => {
-    setSelectedStatus(e.target.value);
-  };
 
   return (
     <section className="add-form">
@@ -49,12 +19,7 @@ export default function TaskForm({ statuses, types, error }) {
         </div>
       )}
 
-      <form
-        action="/add"
-        method="POST"
-        encType="multipart/form-data"
-        id="taskForm"
-      >
+      <form action="/add" method="POST" encType="multipart/form-data">
         <div className="form-grid">
           <div className="field">
             <label htmlFor="title">Название</label>
@@ -77,7 +42,11 @@ export default function TaskForm({ statuses, types, error }) {
 
           <div className="field">
             <label htmlFor="status">Статус</label>
-            <select id="status" name="statusId" onChange={handleStatusChange}>
+            <select
+              id="status"
+              name="statusId"
+              onChange={(e) => setSelectedStatus(e.target.value)}
+            >
               {Object.keys(statuses).map((key) => (
                 <option key={key} value={key.toLowerCase()}>
                   {statuses[key].label}
@@ -88,24 +57,29 @@ export default function TaskForm({ statuses, types, error }) {
 
           <div className="field">
             <label htmlFor="dueDate">Дата завершения</label>
-            <input type="date" id="dueDate" name="dueDate" required />
+            <input
+              type="date"
+              id="dueDate"
+              name="dueDate"
+              min={selectedStatus !== 'completed' ? TODAY : undefined}
+              required
+            />
           </div>
 
           <div className="field">
             <label>Постер</label>
             <label
               htmlFor="file-upload"
-              className={`file-label ${hasFile ? 'has-file' : ''}`}
-              id="fileLabel"
+              className={`file-label ${fileName ? 'has-file' : ''}`}
             >
-              <span id="fileName">{fileName}</span>
+              {fileName ? 'Файл прикреплен' : 'Выбрать файл'}
             </label>
             <input
               id="file-upload"
               type="file"
               name="poster"
               accept="image/*"
-              onChange={handleFileChange}
+              onChange={(e) => setFileName(e.target.files[0]?.name || null)}
             />
           </div>
 

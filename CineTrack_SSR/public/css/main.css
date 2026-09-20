@@ -1,0 +1,231 @@
+:root {
+  --primary: #4f6ef7;
+  --bg: #f5f7fa;
+  --surface: #fff;
+  --border: #e2e8f0;
+  --text: #1e293b;
+  --muted: #64748b;
+  --radius: 8px;
+  --pad: 16px;
+  --gap: 12px;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+*:focus {
+  outline: none;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header,
+.add-form,
+.card,
+.filters a,
+.empty-state,
+.message-box,
+.status-pill,
+footer {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--pad);
+  color: var(--text);
+  font-size: 14px;
+}
+
+header {
+  text-align: center;
+}
+
+header h1 {
+  color: var(--primary);
+  font-size: 20px;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 20px auto;
+  padding: 0 var(--pad);
+  flex: 1;
+  width: 100%;
+}
+
+.add-form {
+  margin-bottom: var(--gap);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--gap);
+  align-items: end;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.field label {
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--muted);
+}
+
+input[type='text'],
+input[type='date'],
+select {
+  height: 38px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  padding: 0 10px;
+  font-size: 14px;
+  width: 100%;
+  background: var(--surface);
+  color: var(--text);
+}
+
+input[type='file'] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.file-label,
+.btn-submit,
+.del-btn {
+  height: 38px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  padding: 0 10px;
+  font-size: 14px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+  color: var(--text);
+}
+
+.file-label {
+  cursor: pointer;
+  border-style: dashed;
+  color: var(--muted);
+}
+
+.file-label.has-file {
+  color: var(--text);
+  border-style: solid;
+  border-color: var(--primary);
+}
+
+.btn-submit,
+.del-btn {
+  cursor: pointer;
+  font-weight: bold;
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+
+.filters {
+  display: flex;
+  gap: var(--gap);
+  margin-bottom: var(--gap);
+  flex-wrap: wrap;
+}
+
+.filters a {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.filters a.active {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--gap);
+}
+
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+.poster-wrapper {
+  width: 100%;
+  height: 180px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.poster-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.no-poster {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.status-pill {
+  align-self: flex-start;
+  font-size: 11px;
+  padding: 4px 8px;
+}
+
+.card h3 {
+  font-size: 15px;
+}
+
+.type,
+.date {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.message-box.error {
+  background: #fef2f2;
+  color: #dc2626;
+  border-color: #fecaca;
+}
+
+footer {
+  text-align: center;
+  margin-top: auto;
+}

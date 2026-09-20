@@ -6,9 +6,13 @@ import Filters from './Filters';
 import TaskList from './TaskList';
 import ImageModal from './ImageModal';
 
-export default function App(props) {
-  const { watchlist, statuses, types, currentFilter, error } = props;
-
+export default function App({
+  watchlist = [],
+  statuses = {},
+  types = {},
+  currentFilter = 'all',
+  error = null,
+} = {}) {
   return (
     <>
       <Header />
